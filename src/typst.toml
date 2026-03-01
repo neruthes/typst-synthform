@@ -1,0 +1,11 @@
+[package]
+
+name = "synthform"
+version = "0.1.0"
+entrypoint = "synthform.typ"
+authors = ["@Neruthes"]
+license = "MIT"
+description = "2-step fillable form tool"
+repository = "https://github.com/neruthes/typst-synthform"
+keywords = ["Fillable", "Form"]
+categories = ["utility"]
