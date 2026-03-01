@@ -31,7 +31,7 @@ Use the `synthform` package to create fillable PDF using Typst + LaTeX with 2 st
 ```
 
 ### Build LaTeX to PDF
-Now you can use your favorite workflow to make the final fillable PDF.
+Now you can use your favorite LaTeX workflow to make the final fillable PDF.
 
 
 
