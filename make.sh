@@ -24,7 +24,6 @@ case "$1" in
 
         ;;
     install_local | i )
-        
         rsync -auv --delete --mkpath --exclude components       src/     "$HOME"/.local/share/typst/packages/local/synthform/"$VER"
         ;;
     fast | f)

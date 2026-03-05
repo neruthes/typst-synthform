@@ -1,36 +1,41 @@
 \documentclass[a4paper,10pt]{article}
 \usepackage[margin=10mm]{geometry}
-\usepackage{calc,graphicx,eso-pic,hyperref}
+\usepackage{calc,graphicx,eso-pic,hyperref,xcolor}
 \pagestyle{empty}
 \newcommand{\absTextField}[5]{%
     % argv: x, y, width, height, id
     \AddToShipoutPictureFG*{\put(#1+1pt,\paperheight-#2-0.5pt){%
-        \TextField[width=#3,height=#4,name=#5]{}%
+      \TextField[
+          width=#3,height=#4,name=#5,
+          borderwidth=0pt,
+          bordercolor=blue,
+          backgroundcolor={0.99 0.99 0.99}
+        ]{}%
     }}%
-}
-\begin{document}
+}%
+\begin{document}%
 \Form~%
 \AddToShipoutPictureBG*{%
-  \put(0mm,0mm){%
-    \includegraphics[%
-      page=1,height=\paperheight%
-    ]{_dist/examples/form01-bg.pdf}}}
+\put(0mm,0mm){%
+  \includegraphics[%
+    page=1,height=\paperheight%
+  ]{_dist/examples/form01-bg.pdf}}}%
 \absTextField{164.45pt}{107.8pt}{154pt}{16.5pt}{input-0}%% page=1
 \absTextField{115.77pt}{137.5pt}{77pt}{16.5pt}{input-1}%% page=1
 \clearpage~%
-%%%%%%%%%%%%%%%%%%%%%%% END OF PAGE1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END OF PAGE1
 \AddToShipoutPictureBG*{%
-  \put(0mm,0mm){%
-    \includegraphics[%
-      page=2,height=\paperheight%
-    ]{_dist/examples/form01-bg.pdf}}}
+\put(0mm,0mm){%
+  \includegraphics[%
+    page=2,height=\paperheight%
+  ]{_dist/examples/form01-bg.pdf}}}%
 \clearpage~%
-%%%%%%%%%%%%%%%%%%%%%%% END OF PAGE2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END OF PAGE2
 \AddToShipoutPictureBG*{%
-  \put(0mm,0mm){%
-    \includegraphics[%
-      page=3,height=\paperheight%
-    ]{_dist/examples/form01-bg.pdf}}}
+\put(0mm,0mm){%
+  \includegraphics[%
+    page=3,height=\paperheight%
+  ]{_dist/examples/form01-bg.pdf}}}%
 \absTextField{164.45pt}{107.8pt}{154pt}{16.5pt}{input-2}%% page=3
 \absTextField{115.77pt}{137.5pt}{77pt}{16.5pt}{input-3}%% page=3
 \end{document}

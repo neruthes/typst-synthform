@@ -1,4 +1,6 @@
-#import "@local/synthform:0.1.0" as synthform
+// #import "@local/synthform:0.1.0" as synthform
+#import "../src/synthform.typ" as synthform
+
 
 
 
@@ -8,12 +10,12 @@
 // BEGIN DOCUMENT CODE
 // =======================================================================
 #let std_lowerbox = box(
-  fill: color.hsl(210deg, 20%, 96%),
-  stroke: color.hsl(215deg, 30%, 35%) + 0.6pt,
+  fill: none,
+  stroke: none,
   width: 100%,
   height: 100%,
-  inset: (left: 6pt),
-  align(left + horizon, text(size: 1em, "")),
+  inset: -0.5pt,
+  box(width: 100%, height: 100%, fill: color.hsl(210deg, 40%, 91%)),
 )
 
 
@@ -48,6 +50,10 @@ And age? #synthform.text-field(width: 7em, std_lowerbox)
 
 
 /*
-ntypstpro examples/form01-bg.typ
+mkdir -p .tmp &&
+ntypstpro examples/form01-bg.typ &&
+cpdf -dump-attachments _dist/examples/form01-bg.pdf -o .tmp &&
+mv .tmp/srcform01-real.tex examples/form01-real.tex &&
 ntex examples/form01-real.tex
 */
+

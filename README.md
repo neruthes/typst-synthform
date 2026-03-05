@@ -10,7 +10,12 @@ Use the `synthform` package to create fillable PDF using Typst + LaTeX with 2 st
 
 ## Workflow
 
-### Import Package
+### Installation
+```sh
+# Clone this repository and
+./make.sh i
+```
+
 ```typ
 #import "@local/synthform:0.1.0" as synthform
 ```

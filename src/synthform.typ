@@ -1,6 +1,6 @@
 // =======================================================================
 //
-// Git repository: 
+// Git repository:
 //      https://github.com/neruthes/typst-synthform
 //
 //
@@ -29,17 +29,26 @@
   })
 }
 
-#let dump-final-latex-get-string(bg-path: "form.pdf") = {
+#let dump-final-latex-get-string(bg-path: "form.pdf", config: (:)) = {
+  let __defaultConfig = (
+    textfield-border-color: "blue",
+    textfield-border-width: "0pt",
+    textfield-background-color: "{0.99 0.99 0.99}",
+  )
+  let final_config = __defaultConfig + config
   let raw_arr = form_box_registry.get()
 
   let latex_doc_content_session = ""
   let current_page_cache = 1
   let __insertbgpic(pagenum) = {
-    "\\AddToShipoutPictureBG*{%
-  \\put(0mm,0mm){%
-    \\includegraphics[%
-      page=@PAGENUM,height=\\paperheight%
-    ]{@BGPATH}}}\n"
+    ```tex
+    \AddToShipoutPictureBG*{%
+    \put(0mm,0mm){%
+      \includegraphics[%
+        page=@PAGENUM,height=\paperheight%
+      ]{@BGPATH}}}%
+    ```
+      .text
       .replace(
         "@BGPATH",
         bg-path,
@@ -56,12 +65,12 @@
       for itr in range(0, delta_page_num) {
         current_page_cache += 1
         latex_doc_content_session += (
-          "\\clearpage~%\n%%%%%%%%%%%%%%%%%%%%%%% END OF PAGE" + repr(current_page_cache - 1) + "\n"
+          "\n\\clearpage~%\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END OF PAGE" + repr(current_page_cache - 1) + "\n"
         )
         latex_doc_content_session += __insertbgpic(current_page_cache)
       }
     }
-    latex_doc_content_session += "\\absTextField{@X}{@Y}{@WIDTH}{@HEIGHT}{input-@ITEM}%% page=@PAGE\n"
+    latex_doc_content_session += "\n\\absTextField{@X}{@Y}{@WIDTH}{@HEIGHT}{input-@ITEM}%% page=@PAGE"
       .replace("@ITEM", repr(row))
       .replace("@X", repr(entry.pos.x))
       .replace("@Y", repr(entry.pos.y))
@@ -71,24 +80,37 @@
   }
 
 
-  let __latex_header = "\\documentclass[a4paper,10pt]{article}
-\\usepackage[margin=10mm]{geometry}
-\\usepackage{calc,graphicx,eso-pic,hyperref}
-\\pagestyle{empty}
-\\newcommand{\\absTextField}[5]{%
-    % argv: x, y, width, height, id
-    \\AddToShipoutPictureFG*{\\put(#1+1pt,\\paperheight-#2-0.5pt){%
-        \\TextField[width=#3,height=#4,name=#5]{}%
-    }}%
-}
-\\begin{document}
-\\Form~%
-"
-  let __latex_footer = "\end{document}"
+  // BEGIN LATEX DOCUMENT HEADER ================================================
+  let __latex_header = ```tex
+  \documentclass[a4paper,10pt]{article}
+  \usepackage[margin=10mm]{geometry}
+  \usepackage{calc,graphicx,eso-pic,hyperref,xcolor}
+  \pagestyle{empty}
+  \newcommand{\absTextField}[5]{%
+      % argv: x, y, width, height, id
+      \AddToShipoutPictureFG*{\put(#1+1pt,\paperheight-#2-0.5pt){%
+        \TextField[
+            width=#3,height=#4,name=#5,
+            borderwidth=@config_borderwidth,
+            bordercolor=@config_bordercolor,
+            backgroundcolor=@config_backgroundcolor
+          ]{}%
+      }}%
+  }%
+  \begin{document}%
+  \Form~%
+  ```
+    .text
+    .trim()
+    .replace("@config_backgroundcolor", final_config.textfield-background-color)
+    .replace("@config_borderwidth", final_config.textfield-border-width)
+    .replace("@config_bordercolor", final_config.textfield-border-color) + "\n"
+  let __latex_footer = "\n\\end{document}"
   return __latex_header + latex_doc_content_session + __latex_footer
 }
-#let add-form-latex-attachment(filename, bg-path: "form.pdf") = {
-  pdf.attach(filename, bytes(dump-final-latex-get-string(bg-path: bg-path)))
+
+#let add-form-latex-attachment(filename, bg-path: "form.pdf", config: (:)) = {
+  pdf.attach(filename, bytes(dump-final-latex-get-string(bg-path: bg-path, config: config)))
 }
 
 
